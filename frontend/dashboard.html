@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>
+    نظام التنبؤ المبكر بالتعثر الأكاديمي
+  </title>
+
+  <!-- CSS -->
+  <link
+    rel="stylesheet"
+    href="style.css"
+  />
+
+  <!-- Font Awesome -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+  />
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+</head>
+
+<body>
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header class="header">
+
+  <div class="header-inner">
+
+    <div class="logo">
+
+      <i class="fas fa-graduation-cap"></i>
+
+      <span>
+        نظام التنبؤ الأكاديمي
+      </span>
+
+    </div>
+
+    <p class="header-sub">
+      تحليلات التعلم المتقدمة · الكشف المبكر عن التعثر · تحسين جودة التعليم الإلكتروني
+    </p>
+
+  </div>
+
+</header>
+
+<!-- =====================================================
+     UPLOAD SECTION
+===================================================== -->
+
+<main
+  class="container"
+  id="uploadSection"
+>
+
+  <div class="upload-card">
+
+    <h2>
+      <i class="fas fa-cloud-upload-alt"></i>
+      رفع ملفات البيانات
+    </h2>
+
+    <p class="upload-desc">
+      ارفع ملفي Gradebook و Analytics المُصدَّرين من Blackboard لبدء التحليل الشامل
+    </p>
+
+    <div class="upload-grid">
+
+      <!-- Gradebook -->
+
+      <div
+        class="upload-box"
+        id="gradebookBox"
+      >
+
+        <div class="upload-icon">
+          <i class="fas fa-table"></i>
+        </div>
+
+        <h3>
+          ملف Gradebook
+        </h3>
+
+        <p>
+          قائمة الطلاب · الدرجات الكلية · درجات الاختبارات
+        </p>
+
+        <label
+          class="btn-upload"
+          for="gradebookInput"
+        >
+
+          <i class="fas fa-folder-open"></i>
+
+          اختر الملف
+
+        </label>
+
+        <input
+          type="file"
+          id="gradebookInput"
+          accept=".csv,.xls,.xlsx"
+          hidden
+        />
+
+        <div
+          class="file-name"
+          id="gradebookName"
+        >
+          لم يتم اختيار ملف
+        </div>
+
+        <div class="file-format-note">
+          يدعم CSV و XLS و XLSX
+        </div>
+
+        <div
+          class="file-check"
+          id="gradebookCheck"
+        ></div>
+
+      </div>
+
+      <!-- Analytics -->
+
+      <div
+        class="upload-box"
+        id="analyticsBox"
+      >
+
+        <div class="upload-icon">
+          <i class="fas fa-chart-line"></i>
+        </div>
+
+        <h3>
+          ملف Analytics
+        </h3>
+
+        <p>
+          التقدير الكلي · المهام الفائتة · ساعات الدراسة · أيام الغياب
+        </p>
+
+        <label
+          class="btn-upload"
+          for="analyticsInput"
+        >
+
+          <i class="fas fa-folder-open"></i>
+
+          اختر الملف
+
+        </label>
+
+        <input
+          type="file"
+          id="analyticsInput"
+          accept=".csv,.xls,.xlsx"
+          hidden
+        />
+
+        <div
+          class="file-name"
+          id="analyticsName"
+        >
+          لم يتم اختيار ملف
+        </div>
+
+        <div class="file-format-note">
+          يدعم CSV و XLS و XLSX
+        </div>
+
+        <div
+          class="file-check"
+          id="analyticsCheck"
+        ></div>
+
+      </div>
+
+    </div>
+
+    <button
+      class="btn-analyze"
+      id="analyzeBtn"
+      disabled
+    >
+
+      <i class="fas fa-brain"></i>
+
+      بدء التحليل الذكي
+
+    </button>
+
+  </div>
+
+</main>
+
+<!-- =====================================================
+     LOADING
+===================================================== -->
+
+<div
+  class="loading-overlay"
+  id="loadingOverlay"
+  style="display:none"
+>
+
+  <div class="loading-box">
+
+    <div class="spinner"></div>
+
+    <p>
+      جارٍ تحليل البيانات...
+    </p>
+
+    <small>
+      يتم تطبيق نماذج التحليل التنبؤي
+    </small>
+
+  </div>
+
+</div>
+
+<!-- =====================================================
+     REPORT SECTION
+===================================================== -->
+
+<section
+  class="container"
+  id="reportSection"
+  style="display:none"
+>
+
+  <!-- TOPBAR -->
+
+  <div class="report-topbar">
+
+    <h2>
+      <i class="fas fa-file-alt"></i>
+      التقرير الشامل
+    </h2>
+
+    <div class="report-actions">
+
+      <button
+        class="btn-secondary"
+        id="newAnalysisBtn"
+      >
+
+        <i class="fas fa-redo"></i>
+
+        تحليل جديد
+
+      </button>
+
+      <button
+        class="btn-download"
+        id="downloadBtn"
+      >
+
+        <i class="fas fa-file-excel"></i>
+
+        تنزيل تقرير Excel
+
+      </button>
+
+    </div>
+
+  </div>
+
+  <!-- KPI -->
+
+  <div
+    class="kpi-grid"
+    id="kpiGrid"
+  ></div>
+
+  <!-- CHARTS -->
+
+  <div class="charts-row">
+
+    <div class="chart-card">
+
+      <h3>
+        <i class="fas fa-chart-pie"></i>
+        توزيع مستويات الخطر
+      </h3>
+
+      <canvas id="riskChart"></canvas>
+
+    </div>
+
+    <div class="chart-card">
+
+      <h3>
+        <i class="fas fa-chart-bar"></i>
+        توزيع الدرجات
+      </h3>
+
+      <canvas id="gradeChart"></canvas>
+
+    </div>
+
+    <div class="chart-card">
+
+      <h3>
+        <i class="fas fa-users"></i>
+        مستوى التفاعل
+      </h3>
+
+      <canvas id="engagementChart"></canvas>
+
+    </div>
+
+    <div class="chart-card">
+
+      <h3>
+        <i class="fas fa-chart-line"></i>
+        اتجاه الأداء
+      </h3>
+
+      <canvas id="trendChart"></canvas>
+
+    </div>
+
+  </div>
+
+  <!-- FILTERS -->
+
+  <div class="filter-bar">
+
+    <span>
+      <i class="fas fa-filter"></i>
+      تصفية:
+    </span>
+
+    <button
+      class="filter-btn active"
+      data-filter="all"
+    >
+      الكل
+    </button>
+
+    <button
+      class="filter-btn danger"
+      data-filter="حرج"
+    >
+      حرج
+    </button>
+
+    <button
+      class="filter-btn warning"
+      data-filter="مرتفع"
+    >
+      مرتفع
+    </button>
+
+    <button
+      class="filter-btn medium"
+      data-filter="متوسط"
+    >
+      متوسط
+    </button>
+
+    <button
+      class="filter-btn success"
+      data-filter="منخفض"
+    >
+      منخفض
+    </button>
+
+    <input
+      type="text"
+      id="searchInput"
+      placeholder="🔍 بحث باسم الطالب..."
+      class="search-input"
+    />
+
+  </div>
+
+  <!-- TABLE -->
+
+  <div class="table-wrapper">
+
+    <table class="students-table">
+
+      <thead>
+
+        <tr>
+
+          <th>#</th>
+
+          <th>
+            اسم الطالب
+          </th>
+
+          <th>
+            الدرجة الكلية
+          </th>
+
+          <th>
+            متوسط الاختبارات
+          </th>
+
+          <th>
+            ساعات المقرر
+          </th>
+
+          <th>
+            تاريخ آخر وصول
+          </th>
+
+          <th>
+            آخر تفاعل بالأيام
+          </th>
+
+          <th>
+            مستوى الخطر
+          </th>
+
+          <th>
+            درجة الخطر
+          </th>
+
+          <th>
+            التفاعل
+          </th>
+
+          <th>
+            اتجاه الأداء
+          </th>
+
+          <th>
+            التوصيات
+          </th>
+
+          <th>
+            إرسال بريد
+          </th>
+
+        </tr>
+
+      </thead>
+
+      <tbody id="studentsBody"></tbody>
+
+    </table>
+
+  </div>
+
+</section>
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer class="footer">
+
+  <p>
+    نظام التنبؤ المبكر بالتعثر الأكاديمي &copy; 2026 · مدعوم بتحليلات التعلم
+  </p>
+
+</footer>
+
+<!-- =====================================================
+     EMAIL MODAL
+===================================================== -->
+
+<div
+    class="modal-overlay"
+    id="emailModal"
+    style="display:none"
+>
+
+    <div class="modal-box">
+
+        <!-- HEADER -->
+        <div class="modal-header">
+
+            <h3>
+                <i class="fas fa-envelope"></i>
+                إرسال بريد إلكتروني
+            </h3>
+
+            <button
+                class="modal-close"
+                id="modalClose"
+                type="button"
+            >
+                ×
+            </button>
+
+        </div>
+
+        <!-- BODY -->
+        <div class="modal-body">
+          <div class="email-field">
+    <label>من:</label>
+    <span id="emailFrom"></span>
+</div>
+
+            <div class="email-field">
+
+                <label>إلى:</label>
+
+                <span id="emailTo"></span>
+
+            </div>
+
+            <div class="email-field">
+
+                <label>الموضوع:</label>
+
+                <span id="emailSubject"></span>
+
+            </div>
+
+            <div class="email-divider"></div>
+
+            <div
+                class="email-body"
+                id="emailBody"
+            ></div>
+
+        </div>
+
+        <!-- FOOTER -->
+        <div class="modal-footer">
+
+            <button
+                class="btn-cancel"
+                id="modalCancel"
+                type="button"
+            >
+                إلغاء
+            </button>
+
+            <button
+                class="btn-send"
+                id="modalSend"
+                type="button"
+            >
+                <i class="fas fa-paper-plane"></i>
+                إرسال
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script src="app.js"></script>
+
+</body>
+</html>

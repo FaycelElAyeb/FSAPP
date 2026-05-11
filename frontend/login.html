@@ -1,0 +1,427 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>نظام التنبؤ الأكاديمي - تسجيل الدخول</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Cairo', sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(160deg, #1a237e 0%, #0d47a1 40%, #1565c0 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* خلفية زخرفية */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -120px; left: -120px;
+      width: 400px; height: 400px;
+      background: rgba(255,255,255,0.04);
+      border-radius: 50%;
+    }
+    body::after {
+      content: '';
+      position: fixed;
+      bottom: -100px; right: -100px;
+      width: 350px; height: 350px;
+      background: rgba(255,255,255,0.04);
+      border-radius: 50%;
+    }
+
+    /* ===== HEADER ===== */
+    .top-bar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(10px);
+      padding: 12px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+      z-index: 10;
+    }
+    .top-bar .uni-name {
+      color: white;
+      font-size: 15px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .top-bar .uni-name i {
+      font-size: 22px;
+      color: #90caf9;
+    }
+    .top-bar .sys-label {
+      color: rgba(255,255,255,0.7);
+      font-size: 13px;
+    }
+
+    /* ===== CARD ===== */
+    .login-card {
+      background: white;
+      border-radius: 24px;
+      padding: 48px 44px 40px;
+      width: 100%;
+      max-width: 440px;
+      box-shadow:
+        0 25px 60px rgba(0,0,0,0.35),
+        0 0 0 1px rgba(255,255,255,0.1);
+      position: relative;
+      z-index: 5;
+      animation: slideUp 0.4s ease;
+    }
+    @keyframes slideUp {
+      from { opacity:0; transform: translateY(30px); }
+      to   { opacity:1; transform: translateY(0); }
+    }
+
+    /* شريط علوي ملون */
+    .card-accent {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, #c62828, #e53935, #ef9a9a);
+      border-radius: 24px 24px 0 0;
+    }
+
+    /* أيقونة وعنوان */
+    .card-icon {
+      text-align: center;
+      margin-bottom: 8px;
+    }
+    .card-icon .icon-wrap {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 72px; height: 72px;
+      background: linear-gradient(135deg, #1a237e, #1565c0);
+      border-radius: 20px;
+      box-shadow: 0 8px 24px rgba(26,35,126,0.35);
+      margin-bottom: 16px;
+    }
+    .card-icon .icon-wrap i {
+      font-size: 32px;
+      color: white;
+    }
+    .card-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: #1a237e;
+      text-align: center;
+      margin-bottom: 4px;
+    }
+    .card-subtitle {
+      font-size: 13px;
+      color: #9e9e9e;
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    /* ===== FORM ===== */
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+      color: #424242;
+      margin-bottom: 8px;
+    }
+    .input-wrap {
+      position: relative;
+    }
+    .input-wrap i {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #9e9e9e;
+      font-size: 16px;
+      transition: color 0.2s;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 13px 44px 13px 16px;
+      border: 2px solid #e0e0e0;
+      border-radius: 12px;
+      font-size: 15px;
+      font-family: 'Cairo', sans-serif;
+      color: #212121;
+      background: #fafafa;
+      outline: none;
+      transition: all 0.25s;
+      direction: rtl;
+    }
+    .form-group input:focus {
+      border-color: #1565c0;
+      background: white;
+      box-shadow: 0 0 0 4px rgba(21,101,192,0.1);
+    }
+    .form-group input:focus + i,
+    .input-wrap:focus-within i {
+      color: #1565c0;
+    }
+
+    /* toggle password */
+    .toggle-pass {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #bdbdbd;
+      cursor: pointer;
+      font-size: 16px;
+      transition: color 0.2s;
+    }
+    .toggle-pass:hover { color: #1565c0; }
+
+    /* ===== BUTTON ===== */
+    .btn-login {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #c62828, #e53935);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 17px;
+      font-weight: 800;
+      font-family: 'Cairo', sans-serif;
+      cursor: pointer;
+      transition: all 0.25s;
+      box-shadow: 0 6px 20px rgba(198,40,40,0.35);
+      margin-top: 8px;
+      letter-spacing: 0.5px;
+    }
+    .btn-login:hover {
+      background: linear-gradient(135deg, #b71c1c, #c62828);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(198,40,40,0.45);
+    }
+    .btn-login:active {
+      transform: translateY(0);
+    }
+    .btn-login i { margin-left: 8px; }
+
+    /* ===== ALERT ===== */
+    .alert {
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      margin-top: 18px;
+      display: none;
+      align-items: center;
+      gap: 10px;
+      animation: fadeIn 0.3s ease;
+    }
+    @keyframes fadeIn { from { opacity:0; transform:translateY(-6px) } to { opacity:1; transform:translateY(0) } }
+
+    .alert.success {
+      background: #e8f5e9;
+      color: #1b5e20;
+      border: 1.5px solid #a5d6a7;
+    }
+    .alert.error {
+      background: #ffebee;
+      color: #b71c1c;
+      border: 1.5px solid #ef9a9a;
+    }
+    .alert i { font-size: 18px; }
+
+    /* ===== FOOTER ===== */
+    .card-footer {
+      text-align: center;
+      margin-top: 28px;
+      padding-top: 20px;
+      border-top: 1px solid #f0f0f0;
+      color: #bdbdbd;
+      font-size: 12px;
+    }
+    .card-footer span { color: #9e9e9e; font-weight: 600; }
+
+    /* ===== BOTTOM LABEL ===== */
+    .bottom-label {
+      margin-top: 28px;
+      color: rgba(255,255,255,0.5);
+      font-size: 12px;
+      text-align: center;
+      z-index: 5;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 480px) {
+      .login-card { padding: 40px 24px 32px; }
+      .card-title { font-size: 19px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- شريط علوي -->
+  <div class="top-bar">
+    <div class="uni-name">
+      <i class="fas fa-university"></i>
+      جامعة القصيم
+    </div>
+    <div class="sys-label">نظام التنبؤ الأكاديمي</div>
+  </div>
+
+  <!-- بطاقة تسجيل الدخول -->
+  <div class="login-card">
+    <div class="card-accent"></div>
+
+    <div class="card-icon">
+      <div class="icon-wrap">
+        <i class="fas fa-graduation-cap"></i>
+      </div>
+      <h1 class="card-title">نظام التنبؤ الأكاديمي</h1>
+      <p class="card-subtitle">الكشف المبكر عن التعثر · تحليلات التعلم المتقدمة</p>
+    </div>
+
+    <form id="loginForm" onsubmit="handleLogin(event)">
+
+      <!-- اسم المستخدم -->
+      <div class="form-group">
+        <label for="username"><i class="fas fa-user" style="margin-left:6px;color:#1565c0"></i> اسم المستخدم</label>
+        <div class="input-wrap">
+          <input
+            type="text"
+            id="username"
+            placeholder="اسم المستخدم"
+            value="Admin"
+            autocomplete="username"
+          />
+          <i class="fas fa-user"></i>
+        </div>
+      </div>
+
+      <!-- كلمة المرور -->
+      <div class="form-group">
+        <label for="password"><i class="fas fa-lock" style="margin-left:6px;color:#1565c0"></i> كلمة المرور</label>
+        <div class="input-wrap">
+          <input
+            type="password"
+            id="password"
+            placeholder="كلمة المرور"
+            value="1447"
+            autocomplete="current-password"
+          />
+          <i class="fas fa-lock"></i>
+          <span class="toggle-pass" onclick="togglePassword()" id="toggleIcon">
+            <i class="fas fa-eye" id="eyeIcon"></i>
+          </span>
+        </div>
+      </div>
+
+      <!-- زر الدخول -->
+      <button type="submit" class="btn-login" id="loginBtn">
+        <i class="fas fa-sign-in-alt"></i> دخول
+      </button>
+
+      <!-- رسالة النتيجة -->
+      <div class="alert" id="alertBox">
+        <i class="fas" id="alertIcon"></i>
+        <span id="alertText"></span>
+      </div>
+
+    </form>
+
+    <div class="card-footer">
+      <span>نظام التنبؤ المبكر بالتعثر الأكاديمي</span><br/>
+      جامعة القصيم &copy; 2025
+    </div>
+  </div>
+
+  <div class="bottom-label">
+    مدعوم بتقنيات التعلم الآلي وتحليلات التعلم
+  </div>
+
+  <script>
+    function handleLogin(e) {
+      e.preventDefault();
+
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const alertBox = document.getElementById('alertBox');
+      const alertText = document.getElementById('alertText');
+      const alertIcon = document.getElementById('alertIcon');
+      const loginBtn  = document.getElementById('loginBtn');
+
+      // تأثير التحميل
+      loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جارٍ التحقق...';
+      loginBtn.disabled = true;
+
+      setTimeout(() => {
+        if (username === 'Admin' && password === '1447') {
+          // نجاح
+          alertBox.className = 'alert success';
+          alertBox.style.display = 'flex';
+          alertIcon.className = 'fas fa-check-circle';
+          alertText.textContent = 'تم تسجيل الدخول بنجاح! جارٍ التحويل...';
+          loginBtn.innerHTML = '<i class="fas fa-check"></i> تم الدخول';
+          loginBtn.style.background = 'linear-gradient(135deg, #2e7d32, #43a047)';
+          loginBtn.style.boxShadow = '0 6px 20px rgba(46,125,50,0.35)';
+
+          // تحويل للصفحة الرئيسية بعد ثانية
+          setTimeout(() => {
+            window.location.href = 'dashboard.html';
+          }, 1200);
+
+        } else {
+          // فشل
+          alertBox.className = 'alert error';
+          alertBox.style.display = 'flex';
+          alertIcon.className = 'fas fa-times-circle';
+          alertText.textContent = 'بيانات الدخول غير صحيحة، يرجى المحاولة مجدداً.';
+          loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> دخول';
+          loginBtn.disabled = false;
+
+          // اهتزاز الكارد
+          const card = document.querySelector('.login-card');
+          card.style.animation = 'none';
+          card.style.transform = 'translateX(8px)';
+          setTimeout(() => { card.style.transform = 'translateX(-8px)'; }, 80);
+          setTimeout(() => { card.style.transform = 'translateX(5px)'; },  160);
+          setTimeout(() => { card.style.transform = 'translateX(0)'; },    240);
+        }
+      }, 700);
+    }
+
+    function togglePassword() {
+      const input   = document.getElementById('password');
+      const eyeIcon = document.getElementById('eyeIcon');
+      if (input.type === 'password') {
+        input.type = 'text';
+        eyeIcon.className = 'fas fa-eye-slash';
+      } else {
+        input.type = 'password';
+        eyeIcon.className = 'fas fa-eye';
+      }
+    }
+
+    // إخفاء الرسالة عند الكتابة
+    document.getElementById('username').addEventListener('input', clearAlert);
+    document.getElementById('password').addEventListener('input', clearAlert);
+    function clearAlert() {
+      const alertBox = document.getElementById('alertBox');
+      alertBox.style.display = 'none';
+    }
+  </script>
+</body>
+</html>
